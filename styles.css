@@ -1,0 +1,552 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  /* min-height: 100vh; */
+  background-color: #f0f0f0;
+  font-family: Arial, sans-serif;
+  padding-top: 60px;
+}
+
+.navbar {
+  background-color: #2c3e50; /* Dark blue background */
+  padding: 1rem;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.navbar ul {
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar li {
+  margin: 0 1rem;
+}
+
+.navbar a {
+  color: #ecf0f1; /* Light gray text */
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar a:hover {
+  background-color: #34495e; /* Darker blue on hover */
+  color: #ffffff;
+}
+
+.navbar a.active {
+  background-color: #e74c3c; /* Red for active state */
+  color: #ffffff;
+}
+.app {
+  display: none;
+}
+
+.app.active {
+  display: block;
+}
+#appContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  padding: 1rem;
+}
+/* Age Calculator Styles */
+#ageCalculator {
+  width: 25rem;
+  background-color: rgba(128, 128, 128, 0.528);
+}
+
+.title {
+  text-align: center;
+  font-size: 1.7rem;
+  color: #110b45;
+  padding: 0.5rem;
+}
+
+.input_container {
+  background-color: #eeeeee;
+  padding: 1rem;
+  height: 15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.input_row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.input-block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-block input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px solid #3498db;
+  border-radius: 4px;
+  outline: none;
+  height: 2.5rem;
+}
+
+.input-block span {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 0.25rem;
+}
+
+.submit-btn {
+  background-color: #1f5ab6;
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  width: fit-content;
+  margin: 1rem auto 0;
+}
+
+.submit-btn:hover {
+  background-color: #2980b9;
+}
+
+.result {
+  text-align: center;
+  font-size: 1.4rem;
+  color: #110b45;
+  margin-top: auto;
+}
+
+/* Standard Calculator Styles */
+#standardCalculator {
+  width: 20rem;
+  background-color: black;
+  border-radius: 15px;
+  padding: 1rem;
+}
+
+.header {
+  text-align: center;
+  color: rgb(224, 72, 17);
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.line {
+  width: 70%;
+  height: 3px;
+  background-color: rgba(255, 68, 0, 0.797);
+  border-radius: 10px;
+  margin: 0.3rem auto;
+}
+
+.display {
+  width: 100%;
+  height: 4rem;
+  background-color: #333;
+  color: white;
+  text-align: right;
+  padding: 0.5rem;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+}
+
+.line2 {
+  height: 1px;
+  width: 85%;
+  background-color: grey;
+  margin: 0.5rem auto;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-top: 1rem;
+}
+
+.btn-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.btn {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  border: 1px solid white;
+  background-color: black;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.clear {
+  width: 8.5rem;
+  border-radius: 2rem;
+  background-color: rgba(255, 68, 0, 0.797);
+}
+
+.operator {
+  background-color: rgba(128, 128, 128, 0.34);
+  border: none;
+}
+
+.equal {
+  background-color: rgba(255, 68, 0, 0.797);
+}
+
+/* Digital Clock Styles */
+.clock-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  width: 30rem;
+  height: 20rem;
+}
+
+.clock_container {
+  position: relative;
+  z-index: 1;
+  background-color: rgba(128, 128, 128, 0.5);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(10px);
+  width: 24rem;
+  height: 9rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.circle {
+  z-index: 0;
+  position: absolute;
+  width: 11rem;
+  height: 11rem;
+  border-radius: 50%;
+}
+
+.top-right {
+  top: 0;
+  right: 0;
+  transform: translate(30%, -0%);
+  background-color: #ea2a67;
+}
+
+.bottom-left {
+  bottom: 0;
+  left: 0;
+  transform: translate(-30%, 0%);
+  background-color: #2094ee;
+}
+
+.todays_date {
+  color: aliceblue;
+}
+
+.time_container {
+  color: white;
+}
+
+.time {
+  font-size: 4rem;
+}
+
+/* stopwatch */
+/* Add these new styles for the stopwatch */
+.stopwatch-container {
+  position: relative;
+  width: 25rem;
+  height: 17rem;
+  background-color: black;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.stopwatch-container .display {
+  position: absolute;
+  width: 27rem;
+  height: 5rem;
+  background: linear-gradient(to right, #0052d4, #4364f7, #6fb1fc);
+  top: 3rem;
+  left: -1rem;
+  border-radius: 5px;
+}
+
+.stopwatch-container .timer-display {
+  height: 100%;
+  font-size: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.stopwatch-container .controls {
+  display: grid;
+  place-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  height: 100%;
+  padding-top: 10rem;
+}
+
+.stopwatch-container .btn {
+  background-color: white;
+  width: 4.5rem;
+  height: 2.3rem;
+  border: none;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 0;
+  margin: 0;
+}
+
+.stopwatch-container .Start {
+  margin-left: 5rem;
+}
+
+.stopwatch-container .Reset {
+  margin-right: 5rem;
+}
+
+/* weather */
+.Wcontainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+  /* background-color: #4a90e2; */
+  background-image: url("background.jpg");
+  background-size: cover;
+  background-position: right center;
+
+  height: 25rem;
+  width: 20remvw;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.Wcontainer h1 {
+  color: white;
+  margin-top: 1rem;
+}
+.today_date {
+  color: white;
+}
+.search {
+  width: 12rem;
+  height: 2rem;
+  border: none;
+  border-radius: 2px;
+}
+
+.search::placeholder {
+  padding: 0.4rem;
+}
+
+.weather_data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 15rem;
+  height: 44%;
+  background-color: rgba(37, 105, 152, 0.5);
+  border-radius: 5px;
+  margin-top: 0.4rem;
+}
+.city {
+  color: white;
+  font-size: 1.6rem;
+  margin-top: 1rem;
+}
+.icon {
+  margin-top: 1rem;
+  height: 2rem;
+  width: 2rem;
+}
+.temp_container {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  font-size: 0.9rem;
+
+  text-overflow: ellipsis;
+
+  /* Fallback for browsers that don't support -webkit-line-clamp */
+  max-height: 2.4em; /* Adjust based on your font size and line height */
+  line-height: 1.2em; /* Adjust based on your design */
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* To-Do List Styles */
+.todo-app {
+  width: 100%;
+  max-width: 540px;
+  background: #fff;
+  margin: 100px auto 20px;
+  padding: 40px 30px 70px;
+  border-radius: 10px;
+}
+
+.todo-app h2 {
+  color: #002765;
+  display: flex;
+  align-items: center;
+}
+
+.todo-app h2 img {
+  width: 30px;
+  margin-left: 10px;
+}
+
+.todo-app .row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #edeef0;
+  border-radius: 30px;
+  padding-left: 20px;
+  margin-bottom: 25px;
+}
+
+.todo-app input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 10px;
+  font-weight: 14px;
+}
+
+.todo-app button {
+  border: none;
+  outline: none;
+  padding: 16px 50px;
+  background: #ff5945;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 40px;
+}
+
+.todo-app ul li {
+  list-style: none;
+  font-size: 17px;
+  padding: 12px 8px 12px 50px;
+  user-select: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.todo-app ul li::before {
+  content: "";
+  position: absolute;
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+  background-image: url(images/unchecked.png);
+  background-size: cover;
+  background-position: center;
+  top: 12px;
+  left: 8px;
+}
+
+.todo-app ul li.checked {
+  color: #555;
+  text-decoration: line-through;
+}
+
+.todo-app ul li.checked::before {
+  background-image: url(images/checked.png);
+}
+
+.todo-app ul li span {
+  position: absolute;
+  right: 0;
+  top: 5px;
+  width: 40px;
+  height: 40px;
+  font-size: 22px;
+  color: #555;
+  line-height: 40px;
+  text-align: center;
+  border-radius: 50%;
+}
+
+.todo-app ul li edit {
+  position: absolute;
+  right: 40px;
+  top: 5px;
+  width: 40px;
+  height: 40px;
+  font-size: 22px;
+  color: #555;
+  line-height: 40px;
+  text-align: center;
+  border-radius: 50%;
+}
+
+.todo-app ul li span:hover {
+  background: #edeef0;
+}
+
+.todo-app ul li .edit {
+  right: 40px;
+  color: #4a90e2;
+}
+
+.todo-app ul li .delete {
+  right: 0;
+  color: #e74c3c;
+}
+
+.todo-app ul li .edit:hover,
+.todo-app ul li .delete:hover {
+  background: #edeef0;
+}
+
+#search-box {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: #edeef0;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 30px;
+}

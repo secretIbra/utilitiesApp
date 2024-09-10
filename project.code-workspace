@@ -1,0 +1,13 @@
+{
+  "folders": [
+	{
+		"path": ".."
+	},
+	{
+		"path": "../../../todo/todoApp"
+	}
+],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "project"
+  }
+}
