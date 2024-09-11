@@ -254,85 +254,126 @@ input.addEventListener("input", (e) => {
 
 // To-Do List functionality
 // To-Do List functionality
+// To-Do List functionality
 const inputBox = document.getElementById("input-box");
 const listContainer = document.getElementById("list-container");
 const searchBox = document.getElementById("search-box");
 const addButton = document.querySelector(".todo-app button");
 
+let tasks = [];
+
 function addTask() {
   if (inputBox.value.trim() === "") {
     alert("You must write something");
     return;
-  } else {
+  }
+
+  tasks.push({
+    text: inputBox.value,
+    completed: false,
+  });
+
+  inputBox.value = "";
+  renderTasks();
+  saveData();
+}
+
+function renderTasks() {
+  listContainer.innerHTML = "";
+  tasks.forEach((task, index) => {
     let li = document.createElement("li");
-    li.innerHTML = inputBox.value;
-    listContainer.appendChild(li);
+    li.innerHTML = task.text;
+    if (task.completed) {
+      li.classList.add("checked");
+    }
 
     let editSpan = document.createElement("span");
     editSpan.innerHTML = "\u270E"; // Pencil icon
     editSpan.className = "edit";
-    li.appendChild(editSpan);
+    editSpan.onclick = () => editTask(index);
 
     let deleteSpan = document.createElement("span");
     deleteSpan.innerHTML = "\u00d7"; // Cross icon
     deleteSpan.className = "delete";
-    li.appendChild(deleteSpan);
+    deleteSpan.onclick = () => deleteTask(index);
 
-    inputBox.value = "";
+    li.appendChild(editSpan);
+    li.appendChild(deleteSpan);
+    li.onclick = () => toggleTask(index);
+
+    listContainer.appendChild(li);
+  });
+}
+
+function toggleTask(index) {
+  tasks[index].completed = !tasks[index].completed;
+  renderTasks();
+  saveData();
+}
+
+function deleteTask(index) {
+  tasks.splice(index, 1);
+  renderTasks();
+  saveData();
+}
+
+function editTask(index) {
+  const newText = prompt("Edit task:", tasks[index].text);
+  if (newText !== null) {
+    tasks[index].text = newText.trim();
+    renderTasks();
     saveData();
   }
 }
 
-listContainer.addEventListener(
-  "click",
-  function (e) {
-    if (e.target.tagName === "LI") {
-      e.target.classList.toggle("checked");
-      saveData();
-    } else if (e.target.className === "delete") {
-      e.target.parentElement.remove();
-      saveData();
-    } else if (e.target.className === "edit") {
-      editTask(e.target.parentElement);
-    }
-  },
-  false
-);
-
-function editTask(li) {
-  const taskText = li.firstChild.textContent;
-  inputBox.value = taskText;
-  li.remove();
-  saveData();
-}
-
 function saveData() {
-  localStorage.setItem("data", listContainer.innerHTML);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-function showTask() {
-  listContainer.innerHTML = localStorage.getItem("data");
+function loadData() {
+  const savedTasks = localStorage.getItem("tasks");
+  if (savedTasks) {
+    tasks = JSON.parse(savedTasks);
+    renderTasks();
+  }
 }
 
 function searchTasks() {
   const searchTerm = searchBox.value.toLowerCase();
-  const tasks = listContainer.getElementsByTagName("li");
+  const filteredTasks = tasks.filter((task) =>
+    task.text.toLowerCase().includes(searchTerm)
+  );
+  renderFilteredTasks(filteredTasks);
+}
 
-  Array.from(tasks).forEach(function (task) {
-    const taskText = task.firstChild.textContent.toLowerCase();
-    if (taskText.includes(searchTerm)) {
-      task.style.display = "";
-    } else {
-      task.style.display = "none";
+function renderFilteredTasks(filteredTasks) {
+  listContainer.innerHTML = "";
+  filteredTasks.forEach((task, index) => {
+    let li = document.createElement("li");
+    li.innerHTML = task.text;
+    if (task.completed) {
+      li.classList.add("checked");
     }
+
+    let editSpan = document.createElement("span");
+    editSpan.innerHTML = "\u270E";
+    editSpan.className = "edit";
+    editSpan.onclick = () => editTask(tasks.indexOf(task));
+
+    let deleteSpan = document.createElement("span");
+    deleteSpan.innerHTML = "\u00d7";
+    deleteSpan.className = "delete";
+    deleteSpan.onclick = () => deleteTask(tasks.indexOf(task));
+
+    li.appendChild(editSpan);
+    li.appendChild(deleteSpan);
+    li.onclick = () => toggleTask(tasks.indexOf(task));
+
+    listContainer.appendChild(li);
   });
 }
 
-showTask();
-
-// Add event listener to the "Add" button
-document.querySelector(".todo-app button").addEventListener("click", addTask);
-
+// Event listeners
 addButton.addEventListener("click", function (event) {
   event.preventDefault();
   addTask();
@@ -345,5 +386,7 @@ inputBox.addEventListener("keypress", function (event) {
   }
 });
 
-// Add event listener for search input
 searchBox.addEventListener("input", searchTasks);
+
+// Load saved tasks when the page loads
+loadData();
