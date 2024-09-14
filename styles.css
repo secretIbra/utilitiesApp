@@ -472,6 +472,9 @@ body {
   user-select: none;
   cursor: pointer;
   position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .todo-app ul li::before {
@@ -483,23 +486,29 @@ body {
   background-image: url(images/unchecked.png);
   background-size: cover;
   background-position: center;
-  top: 12px;
+  top: 50%;
   left: 8px;
-}
-
-.todo-app ul li.checked {
-  color: #555;
-  text-decoration: line-through;
+  transform: translateY(-50%);
 }
 
 .todo-app ul li.checked::before {
   background-image: url(images/checked.png);
 }
+.todo-app ul li .task-text {
+  flex-grow: 1;
+  margin-right: 10px;
+}
 
-.todo-app ul li span {
-  position: absolute;
-  right: 0;
-  top: 5px;
+.todo-app ul li .task-text.checked {
+  text-decoration: line-through;
+  color: #555;
+}
+
+.todo-app ul li .task-actions {
+  display: flex;
+}
+
+.todo-app ul li .task-actions span {
   width: 40px;
   height: 40px;
   font-size: 22px;
@@ -509,44 +518,24 @@ body {
   border-radius: 50%;
 }
 
-.todo-app ul li edit {
-  position: absolute;
-  right: 40px;
-  top: 5px;
-  width: 40px;
-  height: 40px;
-  font-size: 22px;
-  color: #555;
-  line-height: 40px;
-  text-align: center;
-  border-radius: 50%;
-}
-
-.todo-app ul li span:hover {
+.todo-app ul li .task-actions span:hover {
   background: #edeef0;
 }
 
 .todo-app ul li .edit {
-  right: 40px;
   color: #4a90e2;
+  margin-right: 5px;
 }
 
 .todo-app ul li .delete {
-  right: 0;
   color: #e74c3c;
 }
 
-.todo-app ul li .edit:hover,
-.todo-app ul li .delete:hover {
-  background: #edeef0;
-}
-
-#search-box {
-  width: 100%;
-  border: none;
+.edit-input {
+  flex-grow: 1;
+  margin-right: 10px;
+  font-size: 17px;
+  border: 1px solid #ddd;
   outline: none;
-  background: #edeef0;
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 30px;
+  padding: 5px;
 }

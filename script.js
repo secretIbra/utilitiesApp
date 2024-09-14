@@ -252,141 +252,152 @@ input.addEventListener("input", (e) => {
   city = e.target.value;
 });
 
+/// To-Do List functionality
 // To-Do List functionality
 // To-Do List functionality
-// To-Do List functionality
-const inputBox = document.getElementById("input-box");
-const listContainer = document.getElementById("list-container");
-const searchBox = document.getElementById("search-box");
-const addButton = document.querySelector(".todo-app button");
+class TodoList {
+  constructor() {
+    this.tasks = [];
+    this.inputBox = document.getElementById("input-box");
+    this.listContainer = document.getElementById("list-container");
+    this.searchBox = document.getElementById("search-box");
+    this.addButton = document.querySelector(".todo-app button");
 
-let tasks = [];
-
-function addTask() {
-  if (inputBox.value.trim() === "") {
-    alert("You must write something");
-    return;
+    this.addEventListeners();
+    this.loadData();
   }
 
-  tasks.push({
-    text: inputBox.value,
-    completed: false,
-  });
+  addEventListeners() {
+    this.addButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      this.addTask();
+    });
 
-  inputBox.value = "";
-  renderTasks();
-  saveData();
-}
+    this.inputBox.addEventListener("keypress", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        this.addTask();
+      }
+    });
 
-function renderTasks() {
-  listContainer.innerHTML = "";
-  tasks.forEach((task, index) => {
-    let li = document.createElement("li");
-    li.innerHTML = task.text;
-    if (task.completed) {
-      li.classList.add("checked");
+    this.searchBox.addEventListener("input", () => this.searchTasks());
+  }
+
+  addTask() {
+    const taskText = this.inputBox.value.trim();
+    if (taskText === "") {
+      alert("You must write something");
+      return;
     }
 
-    let editSpan = document.createElement("span");
-    editSpan.innerHTML = "\u270E"; // Pencil icon
-    editSpan.className = "edit";
-    editSpan.onclick = () => editTask(index);
-
-    let deleteSpan = document.createElement("span");
-    deleteSpan.innerHTML = "\u00d7"; // Cross icon
-    deleteSpan.className = "delete";
-    deleteSpan.onclick = () => deleteTask(index);
-
-    li.appendChild(editSpan);
-    li.appendChild(deleteSpan);
-    li.onclick = () => toggleTask(index);
-
-    listContainer.appendChild(li);
-  });
-}
-
-function toggleTask(index) {
-  tasks[index].completed = !tasks[index].completed;
-  renderTasks();
-  saveData();
-}
-
-function deleteTask(index) {
-  tasks.splice(index, 1);
-  renderTasks();
-  saveData();
-}
-
-function editTask(index) {
-  const newText = prompt("Edit task:", tasks[index].text);
-  if (newText !== null) {
-    tasks[index].text = newText.trim();
-    renderTasks();
-    saveData();
+    this.tasks.push({ text: taskText, completed: false });
+    this.inputBox.value = "";
+    this.renderTasks();
+    this.saveData();
   }
-}
 
-function saveData() {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-
-function loadData() {
-  const savedTasks = localStorage.getItem("tasks");
-  if (savedTasks) {
-    tasks = JSON.parse(savedTasks);
-    renderTasks();
+  renderTasks(tasksToRender = this.tasks) {
+    this.listContainer.innerHTML = "";
+    tasksToRender.forEach((task, index) => {
+      const li = this.createTaskElement(task, index);
+      this.listContainer.appendChild(li);
+    });
   }
-}
 
-function searchTasks() {
-  const searchTerm = searchBox.value.toLowerCase();
-  const filteredTasks = tasks.filter((task) =>
-    task.text.toLowerCase().includes(searchTerm)
-  );
-  renderFilteredTasks(filteredTasks);
-}
+  createTaskElement(task, index) {
+    const li = document.createElement("li");
+    if (task.completed) li.classList.add("checked");
 
-function renderFilteredTasks(filteredTasks) {
-  listContainer.innerHTML = "";
-  filteredTasks.forEach((task, index) => {
-    let li = document.createElement("li");
-    li.innerHTML = task.text;
-    if (task.completed) {
-      li.classList.add("checked");
+    li.innerHTML = `
+          <span class="task-text">${task.text}</span>
+          <div class="task-actions">
+              <span class="edit">&#9998;</span>
+              <span class="delete">&#215;</span>
+          </div>
+      `;
+
+    li.querySelector(".edit").onclick = (e) => {
+      e.stopPropagation();
+      this.startEditing(index);
+    };
+
+    li.querySelector(".delete").onclick = (e) => {
+      e.stopPropagation();
+      this.deleteTask(index);
+    };
+
+    li.onclick = () => this.toggleTask(index);
+
+    return li;
+  }
+
+  toggleTask(index) {
+    this.tasks[index].completed = !this.tasks[index].completed;
+    this.renderTasks();
+    this.saveData();
+  }
+
+  deleteTask(index) {
+    this.tasks.splice(index, 1);
+    this.renderTasks();
+    this.saveData();
+  }
+
+  startEditing(index) {
+    const li = this.listContainer.children[index];
+    const taskText = li.querySelector(".task-text");
+    const currentText = taskText.textContent;
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.value = currentText;
+    input.className = "edit-input";
+
+    li.insertBefore(input, taskText);
+    li.removeChild(taskText);
+    input.focus();
+
+    input.addEventListener("blur", () => this.finishEditing(index, input));
+    input.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") this.finishEditing(index, input);
+    });
+
+    input.onclick = (e) => e.stopPropagation();
+  }
+
+  finishEditing(index, input) {
+    const newText = input.value.trim();
+    if (newText !== "") {
+      this.tasks[index].text = newText;
+      this.renderTasks();
+      this.saveData();
+    } else {
+      this.renderTasks();
     }
+  }
 
-    let editSpan = document.createElement("span");
-    editSpan.innerHTML = "\u270E";
-    editSpan.className = "edit";
-    editSpan.onclick = () => editTask(tasks.indexOf(task));
+  searchTasks() {
+    const searchTerm = this.searchBox.value.toLowerCase();
+    const filteredTasks = this.tasks.filter((task) =>
+      task.text.toLowerCase().includes(searchTerm)
+    );
+    this.renderTasks(filteredTasks);
+  }
 
-    let deleteSpan = document.createElement("span");
-    deleteSpan.innerHTML = "\u00d7";
-    deleteSpan.className = "delete";
-    deleteSpan.onclick = () => deleteTask(tasks.indexOf(task));
+  saveData() {
+    localStorage.setItem("tasks", JSON.stringify(this.tasks));
+  }
 
-    li.appendChild(editSpan);
-    li.appendChild(deleteSpan);
-    li.onclick = () => toggleTask(tasks.indexOf(task));
-
-    listContainer.appendChild(li);
-  });
+  loadData() {
+    const savedTasks = localStorage.getItem("tasks");
+    if (savedTasks) {
+      this.tasks = JSON.parse(savedTasks);
+      this.renderTasks();
+    }
+  }
 }
 
-// Event listeners
-addButton.addEventListener("click", function (event) {
-  event.preventDefault();
-  addTask();
+// Initialize the TodoList when the DOM is fully loaded
+document.addEventListener("DOMContentLoaded", () => {
+  new TodoList();
 });
-
-inputBox.addEventListener("keypress", function (event) {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    addTask();
-  }
-});
-
-searchBox.addEventListener("input", searchTasks);
-
-// Load saved tasks when the page loads
-loadData();
