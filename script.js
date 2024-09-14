@@ -254,7 +254,7 @@ input.addEventListener("input", (e) => {
 
 /// To-Do List functionality
 // To-Do List functionality
-// To-Do List functionality
+// To-Do List functionality with drag and drop (no icon)
 class TodoList {
   constructor() {
     this.tasks = [];
@@ -281,6 +281,10 @@ class TodoList {
     });
 
     this.searchBox.addEventListener("input", () => this.searchTasks());
+
+    this.listContainer.addEventListener("dragstart", (e) => this.dragStart(e));
+    this.listContainer.addEventListener("dragover", (e) => this.dragOver(e));
+    this.listContainer.addEventListener("drop", (e) => this.drop(e));
   }
 
   addTask() {
@@ -306,6 +310,8 @@ class TodoList {
 
   createTaskElement(task, index) {
     const li = document.createElement("li");
+    li.draggable = true;
+    li.dataset.index = index;
     if (task.completed) li.classList.add("checked");
 
     li.innerHTML = `
@@ -326,11 +332,19 @@ class TodoList {
       this.deleteTask(index);
     };
 
-    li.onclick = () => this.toggleTask(index);
+    // Change this line to capture clicks on the entire li element
+    li.onclick = (e) => {
+      // Only toggle if we didn't click on edit or delete buttons
+      if (
+        !e.target.classList.contains("edit") &&
+        !e.target.classList.contains("delete")
+      ) {
+        this.toggleTask(index);
+      }
+    };
 
     return li;
   }
-
   toggleTask(index) {
     this.tasks[index].completed = !this.tasks[index].completed;
     this.renderTasks();
@@ -394,6 +408,64 @@ class TodoList {
       this.tasks = JSON.parse(savedTasks);
       this.renderTasks();
     }
+  }
+
+  dragStart(e) {
+    if (e.target.tagName === "LI") {
+      e.dataTransfer.setData("text/plain", e.target.dataset.index);
+      setTimeout(() => {
+        e.target.classList.add("dragging");
+      }, 0);
+    }
+  }
+
+  dragOver(e) {
+    e.preventDefault();
+    const draggingElement = this.listContainer.querySelector(".dragging");
+    if (draggingElement) {
+      const closestTask = this.getClosestTask(this.listContainer, e.clientY);
+      if (closestTask) {
+        this.listContainer.insertBefore(draggingElement, closestTask);
+      } else {
+        this.listContainer.appendChild(draggingElement);
+      }
+    }
+  }
+
+  getClosestTask(container, y) {
+    const draggableElements = [
+      ...container.querySelectorAll("li:not(.dragging)"),
+    ];
+    return draggableElements.reduce(
+      (closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if (offset < 0 && offset > closest.offset) {
+          return { offset: offset, element: child };
+        } else {
+          return closest;
+        }
+      },
+      { offset: Number.NEGATIVE_INFINITY }
+    ).element;
+  }
+
+  drop(e) {
+    e.preventDefault();
+    const draggedElement = this.listContainer.querySelector(".dragging");
+    if (draggedElement) {
+      draggedElement.classList.remove("dragging");
+      this.updateTasksOrder();
+    }
+  }
+
+  updateTasksOrder() {
+    const newOrder = Array.from(this.listContainer.children).map((li) =>
+      parseInt(li.dataset.index)
+    );
+    this.tasks = newOrder.map((index) => this.tasks[index]);
+    this.renderTasks();
+    this.saveData();
   }
 }
 

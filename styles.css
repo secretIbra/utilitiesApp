@@ -539,3 +539,17 @@ body {
   outline: none;
   padding: 5px;
 }
+.drag-handle {
+  cursor: move;
+  padding-right: 10px;
+  color: #888;
+}
+
+.todo-app ul li {
+  cursor: move; /* Indicates the item is draggable */
+}
+
+.todo-app ul li.dragging {
+  opacity: 0.5;
+  background-color: #f0f0f0;
+}
