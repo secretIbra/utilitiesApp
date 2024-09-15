@@ -73,22 +73,47 @@ function calculateAge() {
 
 submitBtn.addEventListener("click", calculateAge);
 
+// ... (previous code remains the same)
+
 // Standard Calculator
-// Calculator functionality
 const display = document.getElementById("calc-display");
 const buttons = document.querySelectorAll("#standardCalculator .btn");
 const clearBtn = document.querySelector("#standardCalculator .clear");
 const equalBtn = document.querySelector("#standardCalculator .equal");
+const backspaceBtn = document.querySelector("#standardCalculator .backspace");
 
-// Allow direct input
-display.addEventListener("input", function () {
-  // Optional: You can add input validation here if needed
+// Allow direct input and handle keyboard events
+display.addEventListener("keydown", function (event) {
+  event.preventDefault(); // Prevent default to handle all input manually
+
+  if (
+    (event.key >= "0" && event.key <= "9") ||
+    event.key === "+" ||
+    event.key === "-" ||
+    event.key === "*" ||
+    event.key === "/" ||
+    event.key === "." ||
+    event.key === "(" ||
+    event.key === ")"
+  ) {
+    display.value += event.key;
+  } else if (event.key === "Enter") {
+    calculate();
+  } else if (event.key === "Backspace") {
+    display.value = display.value.slice(0, -1);
+  } else if (event.key === "Escape") {
+    display.value = "";
+  }
 });
 
 // Update display when buttons are clicked
 buttons.forEach((button) => {
   button.addEventListener("click", function () {
-    if (this.innerHTML !== "=" && this.innerHTML !== "clear") {
+    if (
+      this.innerHTML !== "=" &&
+      this.innerHTML !== "Clear" &&
+      this.innerHTML !== "⌫"
+    ) {
       display.value += this.innerHTML;
     }
   });
@@ -97,6 +122,11 @@ buttons.forEach((button) => {
 // Clear display
 clearBtn.addEventListener("click", function () {
   display.value = "";
+});
+
+// Backspace functionality
+backspaceBtn.addEventListener("click", function () {
+  display.value = display.value.slice(0, -1);
 });
 
 // Calculate result
@@ -112,14 +142,7 @@ function calculate() {
   }
 }
 
-// Handle keyboard input
-display.addEventListener("keydown", function (event) {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    calculate();
-  }
-});
-
+// ... (rest of the code remains the same)
 // Digital Clock
 const todays = document.querySelector(".todays_date");
 const timeDisplay = document.querySelector(".time");
@@ -218,40 +241,52 @@ function updateTime() {
 function padZero(num) {
   return num.toString().padStart(2, "0");
 }
-let city = "";
 
-// https://api.openweathermap.org/data/2.5/weather?q=cairo&units=metric&APPID=28fd15358cdecbc1a1dfef367e71acef
+// ... (previous code remains the same)
+
+// Weather App functionality
+let city = "Cairo"; // Set default city to Cairo
 
 const input = document.querySelector(".search");
-const searchbtn = document.querySelector(".searchbtn");
+const searchBtn = document.querySelector(".searchbtn");
 
 const temp = document.querySelector(".temp");
 const cloud = document.querySelector(".weather");
-const cityy = document.querySelector(".city");
+const cityDisplay = document.querySelector(".city");
 
-searchbtn.addEventListener("click", () => {
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=28fd15358cdecbc1a1dfef367e71acef`;
-
-  console.log(city);
+function fetchWeather(cityName) {
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&APPID=28fd15358cdecbc1a1dfef367e71acef`;
 
   fetch(url)
-    .then((res) => {
-      console.log(res);
-
-      return res.json();
-    })
+    .then((res) => res.json())
     .then((data) => {
       console.log(data);
-      cityy.innerHTML = data.name + " , " + data.sys.country;
-      temp.innerHTML = data.main.temp;
+      cityDisplay.innerHTML = `${data.name}, ${data.sys.country}`;
+      temp.innerHTML = `${Math.round(data.main.temp)}°C`;
       cloud.innerHTML = data.weather[0].main;
+    })
+    .catch((error) => {
+      console.error("Error fetching weather data:", error);
+      cityDisplay.innerHTML = "City not found";
+      temp.innerHTML = "";
+      cloud.innerHTML = "";
     });
+}
+
+// Fetch Cairo weather on page load
+document.addEventListener("DOMContentLoaded", () => {
+  fetchWeather(city);
+});
+
+searchBtn.addEventListener("click", () => {
+  fetchWeather(city);
 });
 
 input.addEventListener("input", (e) => {
   city = e.target.value;
 });
 
+// ... (rest of the code remains the same)
 /// To-Do List functionality
 // To-Do List functionality
 // To-Do List functionality with drag and drop (no icon)

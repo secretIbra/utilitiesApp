@@ -209,10 +209,21 @@ body {
   cursor: pointer;
 }
 
-.clear {
-  width: 8.5rem;
-  border-radius: 2rem;
+.last-row .btn {
+  width: 4.5rem;
+  height: 3.5rem;
+  border-radius: 1.75rem;
+  font-size: 1.2rem;
+}
+
+.clear,
+.backspace {
   background-color: rgba(255, 68, 0, 0.797);
+}
+
+.parenthesis {
+  background-color: rgba(128, 128, 128, 0.34);
+  border: none;
 }
 
 .operator {
@@ -376,7 +387,16 @@ body {
 .search::placeholder {
   padding: 0.4rem;
 }
+.searchbtn {
+  border: none;
+  border-radius: 2px;
+  background-color: #007bff;
+  color: white;
+  height: 2rem;
+  width: 3.5rem;
 
+  cursor: pointer;
+}
 .weather_data {
   display: flex;
   flex-direction: column;

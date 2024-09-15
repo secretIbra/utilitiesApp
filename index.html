@@ -46,7 +46,7 @@
       <div id="standardCalculator" class="app">
         <h1 id="calculator" class="header">Calculator</h1>
         <div class="line"></div>
-        <input type="text" id="calc-display" class="display" />
+        <input type="text" class="display" id="calc-display" readonly />
         <div class="line line2"></div>
         <div class="buttons">
           <div class="btn-row">
@@ -65,18 +65,19 @@
             <button class="btn">1</button>
             <button class="btn">2</button>
             <button class="btn">3</button>
-            <button class="btn operator">+</button>
-          </div>
-          <div class="btn-row">
-            <button class="btn">.</button>
-            <button class="btn">0</button>
-            <button class="btn equal">=</button>
             <button class="btn operator">-</button>
           </div>
           <div class="btn-row">
-            <button class="btn">(</button>
-            <button class="btn">)</button>
-            <button class="btn clear">clear</button>
+            <button class="btn">0</button>
+            <button class="btn">.</button>
+            <button class="btn equal">=</button>
+            <button class="btn operator">+</button>
+          </div>
+          <div class="btn-row last-row">
+            <button class="btn parenthesis">(</button>
+            <button class="btn parenthesis">)</button>
+            <button class="btn clear">Clear</button>
+            <button class="btn backspace">⌫</button>
           </div>
         </div>
       </div>
@@ -117,6 +118,7 @@
           <span class="today_date">2024-8-273</span>
           <div>
             <input type="text" class="search" placeholder="Search city name" />
+
             <button class="searchbtn">search</button>
           </div>
           <div class="weather_data">
