@@ -77,17 +77,17 @@ body {
 }
 
 .navbar li {
-  margin: 0 0.5rem; /* Reduce margin for smaller screens */
+  margin: 0 0.25rem; /* Reduce margin for smaller screens */
 }
 
 .navbar a {
   color: #ecf0f1;
   text-decoration: none;
-  font-size: 1rem; /* Increased font size */
-  padding: 0.75rem 1rem; /* Increased padding */
+  font-size: 0.9rem; /* Increased font size */
+  padding: 0.5rem 0.75rem; /* Increased padding */
   border-radius: 5px;
   transition: background-color 0.3s, color 0.3s;
-  display: inline-block; /* Ensure the entire area is clickable */
+  display: inline-block; /* Ensu re the entire area isclickable */
 }
 
 .navbar a:hover {
@@ -649,79 +649,43 @@ body {
   background-color: #f0f0f0;
 }
 
-@media (min-width: 768px) {
-  .navbar a {
-    font-size: 1rem;
-  }
-
-  .app {
-    max-width: 540px;
-  }
-
-  #ageCalculator {
-    width: 25rem;
-  }
-
-  #standardCalculator {
-    width: 20rem;
-  }
-
-  .clock-container {
-    width: 30rem;
-    height: 20rem;
-  }
-
-  .stopwatch-container {
-    width: 25rem;
-    height: 17rem;
-  }
-
-  .Wcontainer {
-    width: 20rem;
-  }
-
-  .todo-app {
-    max-width: 540px;
-    padding: 40px 30px 70px;
-  }
-}
-
-@media (max-width: 991px) {
+@media (max-width: 767px) {
   .navbar {
-    padding: 1.25rem;
+    padding: 0.75rem; /* Reduced from 1.25rem */
   }
 
   .navbar a {
-    font-size: 1.1rem;
-    padding: 1rem 1.25rem;
+    font-size: 1rem; /* Reduced from 1.1rem */
+    padding: 0.75rem 1rem; /* Reduced from 1rem 1.25rem */
   }
 
   .navbar li {
-    margin: 0 0.75rem;
-  }
-
-  .todo-app {
-    margin-top: 30px;
-    padding: 30px 20px 50px;
+    margin: 0 0.5rem; /* Reduced from 0.75rem */
   }
 }
 
-/* Larger screens */
+@media (min-width: 768px) and (max-width: 991px) {
+  .navbar a {
+    font-size: 0.9rem; /* Slightly reduced */
+  }
+}
+
 @media (min-width: 992px) {
   .navbar {
-    padding: 0.75rem;
-  }
-
-  .navbar ul {
-    justify-content: center;
+    padding: 0.5rem; /* Reduced from 0.75rem */
   }
 
   .navbar a {
-    font-size: 1rem;
-    padding: 0.5rem 1rem;
+    font-size: 0.9rem; /* Reduced from 1rem */
+    padding: 0.5rem 0.75rem; /* Reduced from 0.5rem 1rem */
   }
 
   .navbar li {
-    margin: 0 1rem;
+    margin: 0 0.75rem; /* Reduced from 1rem */
   }
+}
+
+/* Adjust body padding to account for smaller navbar */
+body {
+  padding-top: 50px; /* Reduced from 60px */
 }
