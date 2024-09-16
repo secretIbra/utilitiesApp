@@ -13,6 +13,46 @@ body {
   background-color: #f0f0f0;
   font-family: Arial, sans-serif;
   padding-top: 60px;
+
+  --u: 1.52vmin;
+  --c1: #888888;
+  --c2: #6b6b6b;
+  --c3: #4e4e4e;
+  --c4: #464646;
+  --c5: #393939;
+  --gp: 50% / calc(var(--u) * 10) calc(var(--u) * 17.5);
+  --bp: calc(var(--u) * -5) calc(var(--u) * -8.75);
+  height: 100vh;
+  --bg: conic-gradient(
+        from 120deg at 74.5% 91.75%,
+        var(--c2) 0 120deg,
+        #fff0 0 360deg
+      )
+      var(--gp),
+    conic-gradient(
+        from 120deg at 25.5% 91.75%,
+        var(--c1) 0 120deg,
+        #fff0 0 360deg
+      )
+      var(--gp),
+    conic-gradient(from 60deg at 74.5% 75%, var(--c3) 0 120deg, #fff0 0 360deg)
+      var(--gp),
+    conic-gradient(from 180deg at 25.5% 75%, var(--c2) 0 120deg, #fff0 0 360deg)
+      var(--gp),
+    conic-gradient(from 120deg at 50% 67%, var(--c5) 0 120deg, #fff0 0 360deg)
+      var(--gp),
+    conic-gradient(
+        from 90deg at 50% 50%,
+        var(--c1) 0 30deg,
+        var(--c4) 0 90deg,
+        var(--c3) 0 150deg,
+        var(--c2) 0 180deg,
+        #fff0 0 360deg
+      )
+      var(--gp);
+  background: var(--bg), var(--bg), var(--c1);
+  background-position: var(--bp), var(--bp), var(--bp), var(--bp), var(--bp),
+    var(--bp), 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
 }
 
 .navbar {
@@ -107,7 +147,8 @@ body {
 /* Age Calculator Styles */
 #ageCalculator {
   width: 25rem;
-  background-color: rgba(128, 128, 128, 0.528);
+  /* background-color: rgba(128, 128, 128, 0.528); */
+  background-color: white;
 }
 
 .title {
