@@ -63,7 +63,7 @@ body {
   top: 0;
   left: 0;
   z-index: 1000;
-  overflow-x: auto; /* Allow horizontal scrolling if needed */
+  overflow-x: auto; /*  Allow horizontal scrolling if needed */
 }
 
 .navbar ul {
@@ -117,7 +117,7 @@ body {
 
 @media (min-width: 768px) {
   .navbar ul {
-    justify-content: center; /* Center items on larger screens */
+    justify-content: center;
   }
 
   .navbar a {
@@ -141,8 +141,11 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 80vh;
+  min-height: 80vh;
   padding: 1rem;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 /* Age Calculator Styles */
 #ageCalculator {
@@ -647,42 +650,6 @@ body {
 .todo-app ul li.dragging {
   opacity: 0.5;
   background-color: #f0f0f0;
-}
-
-@media (max-width: 767px) {
-  .navbar {
-    padding: 0.75rem; /* Reduced from 1.25rem */
-  }
-
-  .navbar a {
-    font-size: 1rem; /* Reduced from 1.1rem */
-    padding: 0.75rem 1rem; /* Reduced from 1rem 1.25rem */
-  }
-
-  .navbar li {
-    margin: 0 0.5rem; /* Reduced from 0.75rem */
-  }
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  .navbar a {
-    font-size: 0.9rem; /* Slightly reduced */
-  }
-}
-
-@media (min-width: 992px) {
-  .navbar {
-    padding: 0.5rem; /* Reduced from 0.75rem */
-  }
-
-  .navbar a {
-    font-size: 0.9rem; /* Reduced from 1rem */
-    padding: 0.5rem 0.75rem; /* Reduced from 0.5rem 1rem */
-  }
-
-  .navbar li {
-    margin: 0 0.75rem; /* Reduced from 1rem */
-  }
 }
 
 /* Adjust body padding to account for smaller navbar */
